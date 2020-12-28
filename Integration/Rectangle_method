@@ -1,0 +1,45 @@
+#include <iostream>
+#include<math.h>
+#include<iomanip>
+
+using namespace std;
+
+double function(double x)
+{
+	return log(x);
+	//return sin(x) * cos(x);
+	//return x * x + 5 * x + 3;
+}
+
+double rectangles(double a, double step, double n, double x)
+{
+	double sum = 0; 
+	for (int i = 1; i <= n; i++) {
+		x = a + (i - 0.5)*step;
+		sum += function(x);
+	}
+	sum *= step;
+	return sum;
+}
+
+int main(int argc, char** argv)
+{
+	double delta = 1E-7; 
+	double n = 1;
+	double a, b;
+	cout << "Enter the lower limit of integration: " << endl;
+	cin >> a;
+	cout << "Enter the upper limit of integration: " << endl;
+	cin >> b;
+	double step, x;
+	double I, I2;
+	do {
+		n *= 2;
+		step = (b - a) / n;
+		I = rectangles(a, step, n, x);
+		I2 = rectangles(a, step / 2, 2 * n, x);
+	} while (abs((I - I2) / 3) > delta);
+
+	cout << "Answer: " << setprecision(10) << I;
+	return 0;
+}
